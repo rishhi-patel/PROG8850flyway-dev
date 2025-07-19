@@ -34,25 +34,26 @@ jobs:
           until mysqladmin ping -h 127.0.0.1 -uroot -prootpass --silent; do
             sleep 2
           done
-      - name: Run initial Flyway migration (V1)
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}/flyway/sql:/flyway/sql \
-            flyway/flyway \
-            -url=jdbc:mysql://mysql:3306/subscribersdb \
-            -user=flywayuser \
-            -password=flywaypass \
-            migrate
+            - name: Download Flyway CLI
+      - run: |
+          curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/9.22.2/flyway-commandline-9.22.2-linux-x64.tar.gz | tar xvz
+          sudo mv flyway-*/flyway /usr/local/bin/
 
-      - name: Run incremental Flyway migration (V2)
+      - name: Run Flyway initial migration (V1)
         run: |
-          docker run --rm \
-            -v ${{ github.workspace }}/migrations-v2:/flyway/sql \
-            flyway/flyway \
-            -url=jdbc:mysql://mysql:3306/subscribersdb \
-            -user=flywayuser \
-            -password=flywaypass \
-            migrate
+          flyway -url=jdbc:mysql://127.0.0.1:3306/subscribersdb \
+                 -user=flywayuser \
+                 -password=flywaypass \
+                 -locations=filesystem:flyway/sql \
+                 migrate
+
+      - name: Run Flyway incremental migration (V2)
+        run: |
+          flyway -url=jdbc:mysql://127.0.0.1:3306/subscribersdb \
+                 -user=flywayuser \
+                 -password=flywaypass \
+                 -locations=filesystem:migrations-v2 \
+                 migrate
 
       - name: ✅ Deployment Done
         run: echo "🎉 All Flyway migrations completed successfully!"
