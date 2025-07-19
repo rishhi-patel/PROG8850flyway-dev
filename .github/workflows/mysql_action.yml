@@ -39,7 +39,7 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}/flyway/sql:/flyway/sql \
             flyway/flyway \
-            -url=jdbc:mysql://host.docker.internal:3306/subscribersdb \
+            -url=jdbc:mysql://mysql:3306/subscribersdb \
             -user=flywayuser \
             -password=flywaypass \
             migrate
@@ -49,7 +49,7 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}/migrations-v2:/flyway/sql \
             flyway/flyway \
-            -url=jdbc:mysql://host.docker.internal:3306/subscribersdb \
+            -url=jdbc:mysql://mysql:3306/subscribersdb \
             -user=flywayuser \
             -password=flywaypass \
             migrate
