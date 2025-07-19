@@ -40,7 +40,7 @@ jobs:
         run: |
           curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/9.22.2/flyway-commandline-9.22.2-linux-x64.tar.gz | tar xvz
           cd flyway-9.22.2
-          ./flyway -url=jdbc:mysql://127.0.0.1:3306/subscribersdb \
+          ./flyway -url=jdbc:mysql://127.0.0.1:3306/subscribersdb?allowPublicKeyRetrieval=true&useSSL=false \
                    -user=flywayuser \
                    -password=flywaypass \
                    -locations=filesystem:../flyway/sql \
@@ -49,7 +49,7 @@ jobs:
       - name: Run Flyway incremental migration (V2)
         run: |
           cd flyway-9.22.2
-          ./flyway -url=jdbc:mysql://127.0.0.1:3306/subscribersdb \
+          ./flyway -url=jdbc:mysql://127.0.0.1:3306/subscribersdb?allowPublicKeyRetrieval=true&useSSL=false \
                    -user=flywayuser \
                    -password=flywaypass \
                    -locations=filesystem:../migrations-v2 \
