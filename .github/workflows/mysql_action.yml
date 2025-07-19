@@ -1,6 +1,7 @@
 name: Mysql actions demo
 run-name: ${{ github.actor }} is testing out Mysql GitHub Actions 🚀
 on: [push]
+
 jobs:
   setup_mysql_database:
     runs-on: ubuntu-latest
@@ -34,8 +35,9 @@ jobs:
           until mysqladmin ping -h 127.0.0.1 -uroot -prootpass --silent; do
             sleep 2
           done
-            - name: Download Flyway CLI
-      - run: |
+
+      - name: Download Flyway CLI
+        run: |
           curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/9.22.2/flyway-commandline-9.22.2-linux-x64.tar.gz | tar xvz
           sudo mv flyway-*/flyway /usr/local/bin/
 
